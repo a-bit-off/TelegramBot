@@ -24,4 +24,4 @@ go.work
 .idea
 
 # token
-token/
+/token/
