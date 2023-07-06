@@ -11,10 +11,6 @@ import (
 	"time"
 )
 
-var (
-	ErrNoSavePages = errors.New("no save page")
-)
-
 const (
 	defaultPerm = 0774
 )
@@ -70,7 +66,7 @@ func (s Storage) PickRandom(userName string) (p *storage.Page, err error) {
 
 	filesLen := len(files)
 	if filesLen == 0 {
-		return nil, ErrNoSavePages
+		return nil, storage.ErrNoSavePages
 	}
 
 	//	0 - (len - 1)
