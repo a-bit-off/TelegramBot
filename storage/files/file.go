@@ -32,6 +32,7 @@ func (s Storage) Save(page *storage.Page) (err error) {
 	if err = os.MkdirAll(fPath, defaultPerm); err != nil {
 		return err
 	}
+
 	fName, err := fileName(page)
 	if err != nil {
 		return err
@@ -58,6 +59,10 @@ func (s Storage) PickRandom(userName string) (p *storage.Page, err error) {
 	defer func() { err = e.WrapIfErr(op, err) }()
 
 	fPath := filepath.Join(s.basePath, userName)
+
+	// TODO: refactor: PickRandom
+	// 1. check user folder
+	// 2. create folder
 
 	files, err := os.ReadDir(fPath)
 	if err != nil {
@@ -117,7 +122,7 @@ func (s Storage) IsExists(p *storage.Page) (success bool, err error) {
 	return true, nil
 }
 
-func (s Storage) decodePage(filepath string) (p *storage.Page, err error) {
+func (s Storage) decodePage(filepath string) (*storage.Page, error) {
 	const op = "storage.files.decodePage"
 	f, err := os.Open(filepath)
 	if err != nil {
@@ -125,11 +130,13 @@ func (s Storage) decodePage(filepath string) (p *storage.Page, err error) {
 	}
 	defer func() { _ = f.Close() }()
 
+	var p storage.Page
+
 	if err = gob.NewDecoder(f).Decode(p); err != nil {
-		return nil, err
+		return nil, e.Wrap(op, err)
 	}
 
-	return p, nil
+	return &p, nil
 }
 
 func fileName(p *storage.Page) (string, error) {

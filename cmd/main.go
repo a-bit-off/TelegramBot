@@ -31,7 +31,7 @@ func main() {
 }
 
 func mustToken() string {
-	token := flag.String("token", "", "token for access to tg-bot")
+	token := flag.String("tg-token", "", "token for access to tg-bot")
 	flag.Parse()
 
 	if *token == "" {

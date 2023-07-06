@@ -1,13 +1,14 @@
 package telegram
 
 import (
-	"TelegramBot/clients/telegram"
-	"TelegramBot/lib/e"
-	"TelegramBot/storage"
 	"errors"
 	"log"
 	"net/url"
 	"strings"
+
+	"TelegramBot/clients/telegram"
+	"TelegramBot/lib/e"
+	"TelegramBot/storage"
 )
 
 const (
@@ -35,7 +36,6 @@ func (p *Processor) doCmd(text string, chatID int, username string) error {
 	default:
 		return p.tg.SendMessage(chatID, msgUnknownCommand)
 	}
-	return nil
 }
 
 func (p *Processor) savePage(chatID int, pageURL, username string) (err error) {
@@ -66,7 +66,6 @@ func (p *Processor) savePage(chatID int, pageURL, username string) (err error) {
 	}
 
 	return nil
-
 }
 
 func (p *Processor) sendRandom(chatID int, username string) (err error) {

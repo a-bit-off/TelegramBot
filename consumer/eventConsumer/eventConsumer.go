@@ -29,12 +29,13 @@ func (c Consumer) Start() error {
 
 			continue
 		}
-
+		log.Printf("gotEvents = %d", len(gotEvents))
 		if len(gotEvents) == 0 {
 			time.Sleep(1 * time.Second)
 
 			continue
 		}
+
 		if err = c.handleEvents(gotEvents); err != nil {
 			log.Print(err)
 
@@ -44,7 +45,7 @@ func (c Consumer) Start() error {
 	return nil
 }
 
-// TODO: refactor
+// TODO: refactor: handleEvents
 /*
 1. Потеря событий: ретраи, возвращение в хранилище, фоллбэк, подтверждение
 2. Обработка всей пачки: останавливаться после первой ошибки, счетчик ошибок
@@ -52,7 +53,7 @@ func (c Consumer) Start() error {
 */
 func (c *Consumer) handleEvents(events []events.Event) error {
 	for _, event := range events {
-		log.Printf("got new event: %s", event.Text)
+		log.Printf("got new event: %s:", event.Text)
 
 		if err := c.processor.Process(event); err != nil {
 			log.Printf("can't handle event: %s", err.Error())
